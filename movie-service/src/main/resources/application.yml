@@ -1,0 +1,52 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: movie-service
+  datasource:
+    url: jdbc:sqlite:movies.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: false
+    open-in-view: false
+
+recommendation:
+  service:
+    url: http://localhost:8082
+
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      recommendationService:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 1s
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+        register-health-indicator: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,circuitbreakers,circuitbreakerevents
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    root: INFO
+    com.sd: INFO
+    io.github.resilience4j: INFO
