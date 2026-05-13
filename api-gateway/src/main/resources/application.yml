@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  mvc:
+    static-path-pattern: /**
+
+movie:
+  service:
+    url: http://localhost:8081
+
+logging:
+  level:
+    root: INFO
+    com.sd: INFO
