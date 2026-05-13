@@ -1,0 +1,24 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: recommendation-service
+  datasource:
+    url: jdbc:sqlite:recommendations.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+    open-in-view: false
+
+logging:
+  level:
+    root: INFO
+    com.sd: INFO
+    org.hibernate.SQL: WARN
